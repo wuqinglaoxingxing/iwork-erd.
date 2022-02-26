@@ -1,0 +1,8 @@
+/*IE浏览器特殊处理*/
+[browserType='IE'] {
+
+    [defType='select'] {
+        /*设置白色是为了避免叠影*/
+        color: white;
+    }
+}
