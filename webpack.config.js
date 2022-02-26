@@ -37,7 +37,7 @@ module.exports = {
         new VueLoaderPlugin(),
         new HtmlWebpackPlugin({
             template: "./public/index.html",
-            title: "ve-template"
+            title: "iwork-erd"
         }),
         new DefinePlugin({
             BASE_URL:"'/'",
