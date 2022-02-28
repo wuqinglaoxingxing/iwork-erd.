@@ -11,6 +11,7 @@ const tradesys = () => import('./views/tradesys.vue')
 
 // 配置路由
 const router = new VueRouter({
+    mode: 'history',
     routes: [{
             // 登录
             path: '/home',
