@@ -2,12 +2,8 @@ import {
 
     // 导入特殊的错误处理方法
     ExceptionCallbackService_default,
-    ExceptionCallbackService_500,
-    ExceptionCallbackService_504,
     ExceptionCallbackService_520
-} from './service/ExceptionCallbackService';
-
-let ajaxRoot = "/devServer/";
+} from './exceptionCallback';
 
 let config = {
 
@@ -32,25 +28,12 @@ let config = {
         "Content-Type": "application/json;charset=utf-8"
     },
 
+    // 弹出错误弹框
+    "errorAlert":true,
+
     // 请求上下文
-    "baseURL": ajaxRoot,
+    "baseURL": "/erd/",
 
-    // 后管查询上下文
-    "selectURL": "/resource/",
-
-    // 表单提交上下文
-    "submitURL": "/trade/",
-
-    // 上传上下文
-    "uploadURL": `${ajaxRoot}file/upload.do`,
-
-    "downloadURL": `${ajaxRoot}file/download.do`,
-
-    // excel上传上下文
-    "excelUploadURL": `${ajaxRoot}import/tabledatas`,
-
-    // excel下载上下文
-    "excelDownloadURL": `${ajaxRoot}grid/export.do`,
 
     // 请求成功拦截
     "requestBack": config => {
@@ -131,53 +114,6 @@ let config = {
 
         return Promise.reject(error);
     },
-
-    /**
-     * 外设配置
-     * ------------------
-     */
-
-    // 柜外清初始化
-    "gwqPortNo": "4",
-    "gwqBaudRate": "9600",
-
-    // 柜内清初始化
-    "gnqPortNo": "2",
-    "gnqBaudRate": "9600",
-    "gnqICCardMode": "3",
-
-    /**
-     * 快捷键配置
-     * ---------------------
-     */
-    // 锁屏
-    "qk_lock": "ctrl+l",
-    // 聚焦菜单查找
-    "qk_search_menu": "ctrl+alt",
-    //  前一个交易
-    "qk_pre_trade": "ctrl+shift+left",
-    //  后一个交易
-    "qk_next_tarde": "ctrl+shift+right",
-    // 退出交易
-    "qk_exit_tarde": "esc",
-    // 显示当前交易帮助信息
-    "qk_help": "f1",
-    // 将焦点置于交易代码输入框
-    "qk_tarde_focus": "f2",
-    // 将焦点置回交易输入区域
-    "qk_input_focus": "f3",
-    // 提交交易
-    "qk_submit": "f4",
-    // 隐藏/显示标题栏
-    "qk_header": "f5",
-    // 隐藏/显示菜单树
-    "qk_menu": "f6",
-    // 临时签退
-    "qk_quit_temp": "f7",
-    // 交易页面全屏/恢复
-    "qk_full": "f12",
-    // 截屏
-    "qk_cut_screen": "alt+p",
 
 };
 

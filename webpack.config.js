@@ -15,6 +15,7 @@ module.exports = {
         chunkFilename: 'build/bundle.[name].[chunkhash].js'
     },
     resolve: {
+        extensions: ['.js', '.vue', '.json'],
         alias: {
             '@': require('path').resolve(__dirname, 'src')
         }
@@ -30,7 +31,30 @@ module.exports = {
         }, {
             test: /\.svg$/,
             use: ['svg-url-loader']
-        }]
+        },{
+            test: /\.(css|scss)$/,
+            use: ['vue-style-loader?sourceMap', 'css-loader?sourceMap', 'postcss-loader?sourceMap', 'sass-loader?sourceMap']
+        }, {
+            test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+            loader: 'url-loader',
+            options: {
+                publicPath: "../",
+                name: "build/[path][name].[ext]",
+                context: "src/asset",
+                limit: 5000
+            }
+        }, {
+            test: /\.(png|jpg|jpeg|gif|bmp)$/,
+            use: [{
+                loader: "url-loader",
+                options: {
+                    publicPath: "../",
+                    name: "build/[path][name].[ext]",
+                    context: "src/asset",
+                    limit: 5000
+                }
+            }]
+        }],
     },
     plugins: [
         new taskLoaderPlugin(),

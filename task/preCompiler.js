@@ -146,7 +146,7 @@ module.exports = function () {
     toLazyLoad('./src/views/dialogs', './src/views/lazy-load-dialog.js', '弹框');
 
     // 交易
-    toLazyLoad('./src/views/trades', './src/views/lazy-load-trade.js', '交易');
+    // toLazyLoad('./src/views/trades', './src/views/lazy-load-trade.js', '交易');
 
     console.error('\n┗ ---------------------------------------');
 };

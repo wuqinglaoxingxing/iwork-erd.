@@ -1,5 +1,4 @@
 import Vue from 'vue';
-import Vuex from 'vuex'
 
 // 兼容文件
 import 'promise-polyfill/src/polyfill';
@@ -17,7 +16,13 @@ import storeObj from './store';
 // 引入主页面样式
 import './style/basic/root.scss';
 import "./style/polyfill.scss";
+import './style/iconfont/iconfont.css';
 
+// 引入$remote请求服务
+import remote from './service/remote';
+Vue.use(remote);
+
+import Vuex from 'vuex'
 Vue.use(Vuex)
 const store =  new Vuex.Store(storeObj)
 

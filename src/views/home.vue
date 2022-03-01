@@ -11,7 +11,7 @@
             <div class="left">
                 <div class="introduce">
                     <div class="title">
-                        Learn To Make Database model
+                        Start To Make Database model
                     </div>
                     <div class="description">
                         极简易用数据库建模过程精细提炼,
@@ -34,7 +34,7 @@
 export default {
     methods: {
         toMain() {
-            this.$router.push({ path: "/tradesys" });
+            this.$router.push({ path: "/main" });
         },
     },
 };

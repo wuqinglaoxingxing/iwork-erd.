@@ -14,12 +14,12 @@ module.exports = merge(common, {
         historyApiFallback: true,
         proxy: {
             // 普通ajax请求
-            // "/devServer/": {
-            //     target: "http://61.155.2.142:5824/", // sit2
-            //     changeOrigin: true,
-            //     pathRewrite: { "^/devServer": "/" },
-            //     secure: false
-            // },
+            "/erd/": {
+                target: "https://www.fastmock.site/mock/b4c1f5e1e23dbbff5c0671dec97d0ef5/", // sit2
+                changeOrigin: true,
+                pathRewrite: { "^/erd": "/erd" },
+                secure: false
+            },
             // // websocket请求配置 
             // '/websocket': {
             //     target: "ws://61.155.2.142:5824/", //sit2
@@ -41,21 +41,6 @@ module.exports = merge(common, {
         }
     },
     module: {
-        rules: [{
-            test: /\.(css|scss)$/,
-            use: ['vue-style-loader?sourceMap', 'css-loader?sourceMap', 'postcss-loader?sourceMap', 'sass-loader?sourceMap']
-        },{
-            test: /\.(png|jpg|jpeg|gif|bmp)$/,
-            use: [{
-                loader: "url-loader",
-                options: {
-                    publicPath: "../",
-                    name: "build/[path][name].[ext]",
-                    context: "src/asset",
-                    limit: 5000
-                }
-            }]
-        }]
     },
     plugins: [
         new webpack.HotModuleReplacementPlugin(),

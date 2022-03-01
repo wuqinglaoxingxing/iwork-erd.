@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 import home from './views/home.vue';
 
 // 懒加载路由
-const tradesys = () => import('./views/tradesys.vue')
+const main = () => import('./views/main.vue')
 
 // 配置路由
 const router = new VueRouter({
@@ -20,8 +20,8 @@ const router = new VueRouter({
         {
 
             // 交易主界面
-            path: '/tradesys',
-            component: tradesys
+            path: '/main',
+            component: main
         },
         {
             path: '/*',
