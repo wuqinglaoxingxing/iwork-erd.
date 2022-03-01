@@ -5,8 +5,10 @@
 =========================================================
 */
 
-// 你需要在这里注册全部的交易
+// 你需要在这里注册全部的内容
 export default {
     
+"graphCanvas-content":() => import("./contents/graphCanvas-content.vue"),
+"table-content":() => import("./contents/table-content.vue"),
 
 };

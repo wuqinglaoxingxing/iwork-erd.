@@ -56,7 +56,6 @@ body {
 
 input:focus,
 textarea:focus {
-    border-color: var(--focus) !important;
     outline: none;
 }
 

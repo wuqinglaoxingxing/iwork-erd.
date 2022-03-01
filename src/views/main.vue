@@ -73,7 +73,7 @@
                             <input type="text" placeholder="快速搜索数据表">
                         </div>
                         <div class="table-dataTables">
-                            <tableTree :dataTables="dataTables"></tableTree>
+                            <tableTree @open-content='openContent' :dataTables="dataTables"></tableTree>
                         </div>
                     </div>
                     <div class="data-area" v-show="tabNameActive===2">
@@ -81,7 +81,37 @@
                     </div>
                 </div>
             </div>
-            <div class="main-content-right-tab"></div>
+            <div class="main-content-right-tab">
+                <!-- 选项卡 -->
+                <nav>
+                    <ul class="nav-view" v-if="views.length>0">
+                        <li v-for="(view) in views" :key="view.id" :name="view.name" class="point"
+                            :view-id="view.id" @click="turnToPage(view)" :class="{ active: cur_content==view.id }">
+                            <i class="point icon iconfont" 
+                            :class="{ 
+                                'icon-biaodanzujian-biaoge': view.pos==='tbl',
+                                'icon-guanxitu':view.pos==='graph',
+                            }"></i>
+                            <a :title="view.name">
+                                {{view.name}}
+                            </a>
+                            <!-- 关闭内容 -->
+                            <i 
+                                class="close icon iconfont icon-guanbi2" 
+                                :class="{ active: cur_content==view.id }"
+                                @click.stop="closePage(view)">
+                            </i>
+                        </li>
+                    </ul>
+                </nav>
+                <article>
+                    <div class="view-cotent" :view-id="view.id" :key="view.id" v-show="cur_content==view.id"
+                        :class="{ active: cur_content==view.id }" v-for="view in views">
+                        <component v-bind:is="view.page" v-bind:link_data="view" class="animate__animated animate__fadeIn"></component>
+                    </div>
+                </article>
+
+            </div>
         </div>
     </div>
 </template>
@@ -91,6 +121,8 @@ import "@logicflow/core/dist/style/index.css";
 
 import remoteUrl from "@/service/remoteUrl";
 import tableTree from "@/components/table-tree";
+// 引入交易页面
+import pages from "./lazy-load-content";
 
 export default {
     components: {
@@ -116,9 +148,19 @@ export default {
             closeOrOpenShow: true,
             // 数据表
             dataTables: [],
+
+            // 标记当前打开的交易
+            cur_content: "",
+            // 展示内容区域
+            views: [],
         };
     },
 
+    watch: {
+        cur_content(val, oldVal) {
+            debugger
+        }
+    },
     created() {
         // 获取数据表数据
         this.queryDataTables();
@@ -174,6 +216,69 @@ export default {
                 }
             });
         },
+        // 打开内容
+        openContent(params) {
+            const { name, pos, value } = params;
+            const contentID =
+                pos === "tbl" ? name + "-" + value.title : name + "-" + pos;
+            const contentNm =
+                pos === "tbl" ? `${value.title}[${value.chnname}]` : name;
+            console.warn("内容ID：" + contentID + "\n参数：" + value);
+            // 打开直接显示
+            for (let i = 0; i < this.views.length; i++) {
+                if (this.views[i].id === contentID) {
+                    this.cur_content = this.views[i].id;
+                    return;
+                }
+            }
+            this.cur_content = contentID;
+
+            let pageName = {
+                graph: "graphCanvas-content",
+                tbl: "table-content",
+            }[pos];
+
+            this.views.push({
+                id: contentID,
+                name: contentNm,
+                page: pages[pageName],
+                pos:pos,
+                datas: {
+                    scope:name,
+                    value,
+                },
+            });
+        },
+        // 切换视图
+        turnToPage(view) {
+            const { id, name } = view;
+            this.cur_content = id;
+        },
+        // 关闭视图
+        closePage(view){
+            const index = this.views.findIndex(item=>{
+                return item.id===view.id
+            })
+            this.views.splice(index,1)
+            // 判断删除的视图位置
+            // 在开头
+            if(index===0){
+                if(this.views.length>0){
+                    this.cur_content = this.views[0].id;
+                }
+            // 在末尾
+            }else if(index===this.views.length){
+                if(this.views.length>0){
+                    this.cur_content = this.views[this.views.length-1].id;
+                }
+            // 在中间
+            }else{
+                this.cur_content = this.views[index].id;
+            }
+
+        
+
+        }
     },
 };
 </script>
@@ -286,15 +391,13 @@ export default {
     & > .main-content-container {
         flex: 1;
         display: flex;
-        background-color: red;
+        overflow: hidden;
         & > .main-content-left-tab {
             width: 3rem;
-            max-width: 4rem;
             background-color: #eceef2;
             transition: width 1s;
             &.close {
                 width: 0.2rem;
-                max-width: none;
             }
             & > .left-tab-header {
                 & > .left-tab-header-icons {
@@ -361,7 +464,66 @@ export default {
         }
         & > .main-content-right-tab {
             flex: 1;
-            background-color: yellow;
+            overflow: auto;
+            & > nav {
+                .nav-view {
+                    display: flex;
+                    height: 0.4rem;
+                    background-color: #e5e5e5;
+                    overflow: auto;
+                    li {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
+                        white-space: nowrap;
+                        line-height: 0.3rem;
+                        background-color: #fff;
+                        margin: 5px 0 5px 5px;
+                        border-radius: 0.02rem;
+                        border-top: 2px #fff solid;
+                        user-select: none;
+
+                        &.active{
+                            background: #D0DDF4;
+                            border-top: 2px #5595e9 solid;
+                        }
+
+                        &:last-child {
+                            margin-right: 5px;
+                        }
+                        &:hover {
+                            i.close {
+                                color: red;
+                            }
+                        }
+                        a {
+                            display: inline-block;
+                            // width: 1rem;
+                            // text-overflow: ellipsis;
+                            // overflow: hidden;
+                            font-size: 12px;
+                            margin: 0 0.03rem;
+                            cursor: pointer;
+                        }
+                        i.point {
+                            color: #989898;
+                            font-weight: bold;
+                            font-size: 14px;
+                            &.active {
+                                color: #5595e9;
+                            }
+                        }
+                        i.close {
+                            color: #cccc;
+                            margin: 0 0.05rem 0 0;
+                            cursor: pointer;
+                        }
+                    }
+                }
+                .nav-view::-webkit-scrollbar {
+                    height: 0.04rem;
+                }
+            }
         }
     }
 }

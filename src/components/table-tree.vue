@@ -7,7 +7,7 @@
                 <i class="icon iconfont icon-wenjianjia" style="color:#EAA84B;">{{dt.name}}</i>
             </li>
             <ul class="dt-wrapper" v-show="dt.open">
-                <li class="guanxitu pointer" @click="setLIBg($event.currentTarget)">
+                <li class="guanxitu pointer" @click="setLIBg($event.currentTarget)"  @dblclick="openContent('graph',dt.name,dt.graphCanvas)">
                     <i class="icon iconfont icon-guanxitu" style="color:#68AB36;">&nbsp;关系图</i>
                 </li>
                 <ul class="entities-wrapper">
@@ -21,7 +21,8 @@
                     </li>
                     <ul class="entities" v-show="dt.open&&dt.openT">
                         <li class="entity-table pointer" v-for="table in dt.entities" :key="table.title"
-                            @click="setLIBg($event.currentTarget)">
+                            @click="setLIBg($event.currentTarget)"
+                            @dblclick="openContent('tbl',dt.name,table)">
                             <i class="icon iconfont icon-biaodanzujian-biaoge" style="color:#408BD6;"></i>
                             <span :title="table.title+'['+table.chnname+']'">{{table.title}}[{{table.chnname}}]</span>
                         </li>
@@ -40,8 +41,12 @@ export default {
     props: ["dataTables"],
     data() {
         return {
+            // 展示数据
             dataTablesTmp: [],
+            // 上次激活的li
             lastActiveEl: null,
+            // 默认打开还是关闭
+            floderSymbol: true,
         };
     },
     created() {
@@ -67,8 +72,8 @@ export default {
             this.dataTablesTmp = modules.map((module) => {
                 const isHas = Reflect.has(module, "open");
                 const isHasT = Reflect.has(module, "openT");
-                if (!isHas) module.open = false;
-                if (!isHasT) module.openT = false;
+                if (!isHas) module.open = this.floderSymbol;
+                if (!isHasT) module.openT = this.floderSymbol;
                 return module;
             });
         },
@@ -79,6 +84,10 @@ export default {
             self.lastActiveEl = target;
             target.classList.add("active");
         },
+        // 打开内容区域
+        openContent(pos,name,value){
+            this.$emit("open-content",{pos,name,value});
+        }
     },
 };
 </script>
@@ -131,7 +140,7 @@ i {
                     line-height: 0.25rem;
                     span {
                         display: inline-block;
-                        margin-left: .02rem;
+                        margin-left: 0.02rem;
                         color: #454545;
                         white-space: nowrap;
                         overflow: hidden;

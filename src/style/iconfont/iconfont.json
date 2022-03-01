@@ -6,25 +6,18 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "584254",
-      "name": "箭头",
-      "font_class": "iconfontjiantou",
-      "unicode": "e638",
-      "unicode_decimal": 58936
+      "icon_id": "1164943",
+      "name": "点",
+      "font_class": "dian",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
     },
     {
-      "icon_id": "8675195",
-      "name": "下拉",
-      "font_class": "xiala",
-      "unicode": "e62d",
-      "unicode_decimal": 58925
-    },
-    {
-      "icon_id": "16290389",
-      "name": "下拉",
-      "font_class": "xiala1",
-      "unicode": "e629",
-      "unicode_decimal": 58921
+      "icon_id": "20751156",
+      "name": "关闭 (2)",
+      "font_class": "guanbi2",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
     },
     {
       "icon_id": "2076220",
