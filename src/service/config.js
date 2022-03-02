@@ -2,6 +2,8 @@ import {
 
     // 导入特殊的错误处理方法
     ExceptionCallbackService_default,
+    ExceptionCallbackService_500,
+    ExceptionCallbackService_504,
     ExceptionCallbackService_520
 } from './exceptionCallback';
 

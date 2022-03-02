@@ -22,6 +22,11 @@ import './style/iconfont/iconfont.css';
 import remote from './service/remote';
 Vue.use(remote);
 
+// 引入method服务
+import method from './extend/method';
+Vue.use(method);
+
+
 import Vuex from 'vuex'
 Vue.use(Vuex)
 const store =  new Vuex.Store(storeObj)
