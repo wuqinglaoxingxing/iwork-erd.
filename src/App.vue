@@ -1,9 +1,12 @@
 <template>
     <div>
         <!-- 主界面 -->
-        <li class='ui-main'>
+        <div class='ui-main'>
             <router-view></router-view>
-        </li>
+        </div>
+
+        <!-- 弹框组件 -->
+        <!-- 遮掩层99 弹框层100+ -->
 
     </div>
 </template>
