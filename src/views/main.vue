@@ -73,7 +73,7 @@
                             <input type="text" placeholder="快速搜索数据表">
                         </div>
                         <div class="table-dataTables">
-                            <tableTree @open-content='openContent' :dataTables="dataTables"></tableTree>
+                            <tableTree @open-content='openContent' :dataTables="dataTables" :dataTypeDomains="dataTypeDomains"></tableTree>
                         </div>
                     </div>
                     <div class="data-area" v-show="tabNameActive===2">
@@ -107,8 +107,9 @@
                 <article>
                     <div class="view-cotent" :view-id="view.id" :key="view.id" v-show="cur_content==view.id"
                         :class="{ active: cur_content==view.id }" v-for="view in views">
-                        <component v-bind:is="view.page" v-bind:link_data="view" class="animate__animated animate__fadeIn"></component>
+                        <component v-bind:is="view.page" v-bind:link_data="view" :dataTypeDomains="dataTypeDomains" class="animate__animated animate__fadeIn"></component>
                     </div>
+                    <div v-show="views.length===0" class="view-empty">双击左侧树图开始工作吧</div>
                 </article>
 
             </div>
@@ -148,6 +149,8 @@ export default {
             closeOrOpenShow: true,
             // 数据表
             dataTables: [],
+            // 数据域
+            dataTypeDomains:{},
 
             // 标记当前打开的交易
             cur_content: "",
@@ -158,12 +161,14 @@ export default {
 
     watch: {
         cur_content(val, oldVal) {
-            debugger
+            // debugger
         }
     },
     created() {
         // 获取数据表数据
         this.queryDataTables();
+        // 获取数据类型数据域
+        this.queryDataTypeDomains();
     },
 
     mounted() {
@@ -213,6 +218,18 @@ export default {
                 if (code == "000000") {
                     const { modules } = data;
                     this.dataTables = modules;
+                }
+            });
+        },
+        // 获取数据类型数据域
+        queryDataTypeDomains() {
+            this.$remote.post(remoteUrl.QUERY_DATA_TYPE_DOMAINS, {}, (res) => {
+                const {
+                    data: { code, data },
+                } = res;
+                if (code == "000000") {
+                    const { dataTypeDomains } = data;
+                    this.dataTypeDomains = dataTypeDomains;
                 }
             });
         },
@@ -506,6 +523,7 @@ export default {
                             cursor: pointer;
                         }
                         i.point {
+                            margin-left: .05rem;
                             color: #989898;
                             font-weight: bold;
                             font-size: 14px;
@@ -522,6 +540,16 @@ export default {
                 }
                 .nav-view::-webkit-scrollbar {
                     height: 0.04rem;
+                }
+            }
+            &>article{
+                .view-cotent{
+                    margin:0 .1rem;
+                }
+                .view-empty{
+                    margin-top: 1rem;
+                    text-align: center;
+                    color: #585858;
                 }
             }
         }

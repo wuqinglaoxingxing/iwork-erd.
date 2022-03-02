@@ -1,7 +1,8 @@
 html {
     /* 统一rem计算基数 */
     font-size: 100px;
-    font-family: sans-serif;
+    font-family: "微软雅黑";
+    /* font-family: sans-serif; */
     /*
   ------------------
   防止iPhone在坚屏转向横屏时放大文字
