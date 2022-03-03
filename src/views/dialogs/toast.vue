@@ -1,11 +1,18 @@
 <template>
     <div :class="data[0]" class="toast" ref="toast" @mouseleave="doClose" @mouseenter="doStop()">
-        <h2>
-            {{data[1]}}
-        </h2>
-        <p>
-            {{data[2]}}
-        </p>
+        <i class="point icon iconfont" :class="{ 
+            'icon-chenggong': data[0]==='info',
+            'icon-huangsejinggao':data[0]==='warn',
+            'icon-guanbi2':data[0]==='error',
+        }"></i>
+        <div class="content">
+            <h2>
+                {{data[1]}}
+            </h2>
+            <p>
+                {{data[2]}}
+            </p>
+        </div>
     </div>
 </template>
 <script>
@@ -35,9 +42,11 @@ export default {
         },
     },
     mounted() {
-        const dialogFrame = this.$refs.toast.closest("div[deftype='dialogFrame']") 
-        if(dialogFrame){
-            dialogFrame.style.transform = "none"
+        const dialogFrame = this.$refs.toast.closest(
+            "div[deftype='dialogFrame']"
+        );
+        if (dialogFrame) {
+            dialogFrame.style.transform = "none";
         }
         window.setTimeout(() => {
             this.$refs.toast.style.opacity = 1;
@@ -47,7 +56,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .toast {
-    display: inline-block;
     position: fixed;
     right: 0.3rem;
     bottom: 0.3rem;
@@ -58,27 +66,37 @@ export default {
     cursor: pointer;
     opacity: 0;
     min-width: 2rem;
-    &.warn {
-        background-color: rgb(247, 184, 10);
-        box-shadow: 0px 0px 10px 1px #f6be33;
-    }
-    &.error {
-        background-color: #d81e1e;
-        box-shadow: 0px 0px 10px 1px #d81e1e;
-    }
-    &.info {
-        background-color: #1fee5e;
-        box-shadow: 0px 0px 10px 1px #1fee5e;
-    }
-    background-image: url("../../asset/image/tradesys/23.png");
-    background-repeat: no-repeat;
-    background-position: 0.1rem center;
-    background-size: auto 50%;
-    padding-left: 0.7rem;
+    display:flex;
     color: #fff;
     line-height: 1.4em;
     border-radius: 0.05rem;
     max-width: 3.5rem;
+    i{
+        width: .3rem;
+        text-align: center;
+        font-size: 20px;
+    }
+    &.warn {
+        background-color: #f5d27a;
+        box-shadow: 0px 0px 10px 1px #f6be33;
+        i{
+            color: #eba504;
+        }
+    }
+    &.error {
+        background-color: #eb6464;
+        box-shadow: 0px 0px 10px 1px #eb6464;
+        i{
+            color: red;
+        }
+    }
+    &.info {
+        background-color: #398af3;
+        box-shadow: 0px 0px 10px 1px #398af3;
+        i{
+            color: #72C140;
+        }
+    }
     & > h2 {
         font-size: 0.14rem;
     }

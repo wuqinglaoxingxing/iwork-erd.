@@ -11,12 +11,19 @@ import App from './App.vue';
 // 引入路由文件
 import router from './route';
 // 引入全局变量
+import Vuex from 'vuex'
 import storeObj from './store';
+Vue.use(Vuex)
+const store =  new Vuex.Store(storeObj)
 
-// 引入主页面样式
+// 引入页面样式
 import './style/basic/root.scss';
 import "./style/polyfill.scss";
 import './style/iconfont/iconfont.css';
+import './style/app.scss';
+
+// 自定义全局指令
+import "./directive/dragdrop";
 
 // 引入$remote请求服务
 import remote from './service/remote';
@@ -26,10 +33,6 @@ Vue.use(remote);
 import method from './extend/method';
 Vue.use(method);
 
-
-import Vuex from 'vuex'
-Vue.use(Vuex)
-const store =  new Vuex.Store(storeObj)
 
 //根对象
 window.vm = new Vue({

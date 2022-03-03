@@ -19,9 +19,7 @@
                         省去不必要的操作,
                         只留下最需要的,
                         直截了当的展现给用户。
-                        自带案例自带参考案例,
-                        以耳熟能详的[学生信息管理]为原型参考,
-                        让用户能够快速了解[iwork-ERD]
+                        快速了解[iwork-ERD]
                     </div>
                     <input class="toMain" type="button" value="Start" @click='toMain'>
                 </div>

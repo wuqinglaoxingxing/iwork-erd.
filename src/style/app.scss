@@ -1,2 +1,44 @@
 .rootApp {
+
+    // 弹框界面
+    &>.ui-dialog {
+        &>.view {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+
+            &:not(.shade) {
+                pointer-events: none;
+
+                &>* {
+                    pointer-events: all;
+                }
+            }
+
+            &:last-child {
+                z-index: 3;
+            }
+
+            &.shade {
+                z-index: 99;
+                background-color: rgba(0, 0, 0, 0.4);
+            }
+        }
+
+        &>div.dragdrop {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            /* 50%为自身尺寸的一半 */
+            z-index: 100;
+
+            &>div {
+                display: inline-block;
+            }
+        }
+    }
 }

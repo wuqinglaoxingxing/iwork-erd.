@@ -1,0 +1,70 @@
+/* 主要按钮 */
+.btn_main_l {
+    width: 88px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.btn_main_m {
+    width: 70px;
+    height: 35px;
+    font-size: 14px;
+}
+
+.btn_main_s {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+}
+.btn_main_s,.btn_main_m ,.btn_main_l{
+    cursor: pointer;
+    background: #398af3;
+    border-radius: 2px;
+    color: #fff;
+}
+.btn_main_s:hover,.btn_main_m:hover ,.btn_main_l:hover{
+    background: #4a9dfc !important;
+}
+.btn_main_s:disabled,.btn_main_m:disabled ,.btn_main_l:disabled{
+    background: #BAE1FF!important;
+    cursor: not-allowed!important;
+    border: 1px solid rgba(216,216,216,1)!important;
+}
+/* 次级按钮 */
+
+.btn_second_l {
+    width: 88px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.btn_second_m {
+    width: 70px;
+    height: 35px;
+    font-size: 14px;
+}
+
+.btn_second_s {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+}
+.btn_second_s,.btn_second_m ,.btn_second_l{
+    cursor: pointer;
+    background: #fff;
+    border-radius: 2px;
+    color: #006EFF;
+    border:1px solid #006EFF;
+}
+
+.btn_second_s:hover,.btn_second_m:hover ,.btn_second_l:hover{
+    color: #2E90FF  !important;
+    border: 1px solid #2E90FF!important;
+}
+.btn_second_s:disabled,.btn_second_m:disabled ,.btn_second_l:disabled{
+    background: #fff!important;
+    color: #BAE1FF !important;
+    cursor: not-allowed!important;
+    border: 1px solid #BAE1FF!important;
+}
+/* 次级按钮 */
