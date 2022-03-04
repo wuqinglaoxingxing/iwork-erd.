@@ -1,13 +1,13 @@
 <template>
     <div class="data-tables-container">
         <ul class="data-tables" v-for="dt in dataTablesTmp" :key="dt.name">
-            <li class="graphCanvas pointer" @click="setLIBg($event.currentTarget)" @dblclick.stop="dt.open=!dt.open">
+            <li class="graphCanvas pointer" @click="setLIBg($event.currentTarget)" @dblclick.stop="dt.open=!dt.open" :id="dt.name">
                 <i class="icon iconfont icon-xialajiantouxiao" :class="{'fanzhuan':dt.open,'bufanzhuan':!dt.open}"
                     style="color:#4C5058;" @click="dt.open=!dt.open"></i>
                 <i class="icon iconfont icon-wenjianjia" style="color:#EAA84B;">{{dt.name}}</i>
             </li>
             <ul class="dt-wrapper" v-show="dt.open">
-                <li class="guanxitu pointer" @click="setLIBg($event.currentTarget)"  @dblclick="openContent('graph',dt.name,dt.graphCanvas)">
+                <li class="guanxitu pointer" @click="setLIBg($event.currentTarget)"  @dblclick="openContent('graph',dt.name,dt.graphCanvas)" :id="dt.name+'-graph'">
                     <i class="icon iconfont icon-guanxitu" style="color:#68AB36;">&nbsp;关系图</i>
                 </li>
                 <ul class="entities-wrapper">
@@ -20,7 +20,7 @@
                         <i class="icon iconfont icon-wenjianjia" style="color:#EAA84B;">数据表</i>
                     </li>
                     <ul class="entities" v-show="dt.open&&dt.openT">
-                        <li class="entity-table pointer" v-for="table in dt.entities" :key="table.title"
+                        <li class="entity-table pointer" v-for="(table,idx) in dt.entities" :key="idx" :id="dt.name+'-'+table.title"
                             @click="setLIBg($event.currentTarget)"
                             @dblclick="openContent('tbl',dt.name,table)">
                             <i class="icon iconfont icon-biaodanzujian-biaoge" style="color:#408BD6;"></i>
@@ -43,8 +43,6 @@ export default {
         return {
             // 展示数据
             dataTablesTmp: [],
-            // 上次激活的li
-            lastActiveEl: null,
             // 默认打开还是关闭
             floderSymbol: true,
         };
@@ -54,10 +52,10 @@ export default {
             console.log(this.dataTables);
         }, 2000);
     },
-    mounted() {},
     watch: {
         dataTables: {
             handler(n, o) {
+                debugger
                 const newV = _.cloneDeep(n);
                 // 处理数据
                 this.setDataTablesTmp(newV);
@@ -77,11 +75,10 @@ export default {
                 return module;
             });
         },
-        // 设置背景
+        // 设置点击的el
         setLIBg(target) {
-            const self = this;
-            self.lastActiveEl && self.lastActiveEl.classList.remove("active");
-            self.lastActiveEl = target;
+            const curActive = document.querySelector(".data-tables-container li.active");
+            curActive&&curActive.classList.remove("active");
             target.classList.add("active");
         },
         // 打开内容区域

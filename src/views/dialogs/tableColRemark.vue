@@ -1,30 +1,42 @@
 <template>
     <div class="warning">
         <h2 v-dragdrop>
-            {{data[2]}}
+            说明详情
             <span @click="$store.commit('closeDialog')">
                 <i class="icon iconfont icon-chahao"></i>
             </span>
         </h2>
         <div>
-            <div class='content' v-html="data[1]"></div>
+            <div class='content'>
+                <textarea spellcheck="false" v-model="content">
+                </textarea>
+            </div>
             <div class='btlist'>
-                <input type="button" class='btn_main_s' :value="data[3]" @click="$store.commit('closeDialog','yes')">
-                <input type="button" class='btn_second_s' :value="data[4]" @click="$store.commit('closeDialog','no')"
-                    v-if='data[0]=="confirm"'>
+                <input type="button" class='btn_main_s' value="确定" @click="$store.commit('closeDialog',content)">
+                <input type="button" class='btn_second_s' value="取消" @click="$store.commit('closeDialog')">
             </div>
         </div>
     </div>
 </template>
 <script>
+import _ from "lodash";
 export default {
     props: ["data"],
+    data() {
+        return {
+            content: "",
+        };
+    },
+    created() {
+        this.content = _.cloneDeep(this.data);
+    },
 };
 </script>
 <style lang="scss" scoped>
 @import "@/style/dialog.scss";
 .warning {
-    width: 4.2rem;
+    min-width: 55vw;
+    max-width: 80vw;
     margin: auto;
 
     & > h2 {
@@ -51,8 +63,15 @@ export default {
             &.content {
                 color: $content-color;
                 font-size: 0.12rem;
-                max-height: 2rem;
                 overflow: auto;
+                & > textarea {
+                    width: 100%;
+                    height: 2rem;
+                    overflow: auto;
+                    resize: none;
+                    border:$border;
+                    color: $content-color;
+                }
             }
             &.btlist {
                 padding-top: 0;

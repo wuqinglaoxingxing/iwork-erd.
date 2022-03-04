@@ -66,42 +66,44 @@ export default {
     cursor: pointer;
     opacity: 0;
     min-width: 2rem;
-    display:flex;
+    display: flex;
     color: #fff;
     line-height: 1.4em;
     border-radius: 0.05rem;
     max-width: 3.5rem;
-    i{
-        width: .3rem;
+    i {
+        width: 0.3rem;
         text-align: center;
         font-size: 20px;
     }
     &.warn {
         background-color: #f5d27a;
         box-shadow: 0px 0px 10px 1px #f6be33;
-        i{
+        i {
             color: #eba504;
         }
     }
     &.error {
         background-color: #eb6464;
         box-shadow: 0px 0px 10px 1px #eb6464;
-        i{
+        i {
             color: red;
         }
     }
     &.info {
         background-color: #398af3;
         box-shadow: 0px 0px 10px 1px #398af3;
-        i{
-            color: #72C140;
+        i {
+            color: #72c140;
         }
     }
-    & > h2 {
-        font-size: 0.14rem;
-    }
-    & > p {
-        font-size: 0.12rem;
+    & > .content {
+        & > h2 {
+            font-size: 0.16rem;
+        }
+        & > p {
+            font-size: 0.12rem;
+        }
     }
 }
 </style>

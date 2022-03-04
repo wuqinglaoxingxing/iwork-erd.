@@ -8,6 +8,7 @@
 // 你需要在这里注册全部的弹框
 export default {
     
+"tableColRemark":() => import("./dialogs/tableColRemark.vue"),
 "toast":() => import("./dialogs/toast.vue"),
 "warning":() => import("./dialogs/warning.vue"),
 

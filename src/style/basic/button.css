@@ -31,7 +31,6 @@
     border: 1px solid rgba(216,216,216,1)!important;
 }
 /* 次级按钮 */
-
 .btn_second_l {
     width: 88px;
     height: 40px;
@@ -68,3 +67,38 @@
     border: 1px solid #BAE1FF!important;
 }
 /* 次级按钮 */
+.btn_thired_l {
+    width: 88px;
+    height: 40px;
+    font-size: 16px;
+}
+
+.btn_thired_m {
+    width: 70px;
+    height: 35px;
+    font-size: 14px;
+}
+
+.btn_thired_s {
+    width: 60px;
+    height: 30px;
+    font-size: 12px;
+}
+.btn_thired_s,.btn_thired_m ,.btn_thired_l{
+    cursor: pointer;
+    background: #FFFFFF;
+    border-radius: 2px;
+    color: #585858;
+    border:1px solid #BEBEBE ;
+}
+
+.btn_thired_s:hover,.btn_thired_m:hover ,.btn_thired_l:hover{
+    color: #282828   !important;
+    border: 1px solid #BEBEBE!important;
+}
+.btn_thired_s:disabled,.btn_thired_m:disabled ,.btn_thired_l:disabled{
+    background: #F8F8F8!important;
+    color: #BEBEBE !important;
+    cursor: not-allowed!important;
+    border: 1px solid #D8D8D8!important;
+}

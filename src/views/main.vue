@@ -73,7 +73,8 @@
                             <input type="text" placeholder="快速搜索数据表">
                         </div>
                         <div class="table-dataTables">
-                            <tableTree @open-content='openContent' :dataTables="dataTables" :dataTypeDomains="dataTypeDomains"></tableTree>
+                            <tableTree @open-content='openContent' :dataTables="dataTables"
+                                :dataTypeDomains="dataTypeDomains"></tableTree>
                         </div>
                     </div>
                     <div class="data-area" v-show="tabNameActive===2">
@@ -84,21 +85,18 @@
             <div class="main-content-right-tab">
                 <!-- 选项卡 -->
                 <nav>
-                    <ul class="nav-view" v-if="views.length>0">
-                        <li v-for="(view) in views" :key="view.id" :name="view.name" class="point"
-                            :view-id="view.id" @click="turnToPage(view)" :class="{ active: cur_content==view.id }">
-                            <i class="point icon iconfont" 
-                            :class="{ 
+                    <ul class="nav-view" v-if="views.length>0" ref="navView">
+                        <li v-for="(view) in views" :key="view.id" :name="view.name" class="point" :view-id="view.id"
+                            @click="turnToPage(view)" :class="{ active: cur_content==view.id }">
+                            <i class="point icon iconfont" :class="{ 
                                 'icon-biaodanzujian-biaoge': view.pos==='tbl',
                                 'icon-guanxitu':view.pos==='graph',
                             }"></i>
                             <a :title="view.name">
-                                {{view.name}}
+                                {{view.name}}--{{view.unupdated}}
                             </a>
                             <!-- 关闭内容 -->
-                            <i 
-                                class="close icon iconfont icon-guanbi2" 
-                                :class="{ active: cur_content==view.id }"
+                            <i class="close icon iconfont icon-guanbi2" :class="{ active: cur_content==view.id }"
                                 @click.stop="closePage(view)">
                             </i>
                         </li>
@@ -107,7 +105,8 @@
                 <article>
                     <div class="view-cotent" :view-id="view.id" :key="view.id" v-show="cur_content==view.id"
                         :class="{ active: cur_content==view.id }" v-for="view in views">
-                        <component v-bind:is="view.page" v-bind:link_data="view" :dataTypeDomains="dataTypeDomains" class="animate__animated animate__fadeIn"></component>
+                        <component v-bind:is="view.page" v-bind:link_data="view" @upView="upView" @upNavState="upNavState"
+                            :dataTypeDomains="dataTypeDomains" class="animate__animated animate__fadeIn"></component>
                     </div>
                     <div v-show="views.length===0" class="view-empty">双击左侧树图开始工作吧</div>
                 </article>
@@ -150,7 +149,7 @@ export default {
             // 数据表
             dataTables: [],
             // 数据域
-            dataTypeDomains:{},
+            dataTypeDomains: {},
 
             // 标记当前打开的交易
             cur_content: "",
@@ -161,8 +160,84 @@ export default {
 
     watch: {
         cur_content(val, oldVal) {
+            const navView = this.$refs["navView"];
+            if (navView) {
+                // 移动nav滚动条，让激活的nav显示
+                this.$nextTick(() => {
+                    // 右侧距离
+                    const padding = 5;
+                    // 如果出现滚动条
+                    if (navView.scrollWidth > navView.clientWidth) {
+                        const liActive = navView.querySelector("li.active");
+                        if (liActive) {
+                            // 判断是否需要滚动
+                            if (
+                                liActive.offsetLeft +
+                                    liActive.clientWidth -
+                                    navView.scrollLeft >
+                                    navView.clientWidth ||
+                                liActive.offsetLeft +
+                                    liActive.clientWidth -
+                                    navView.scrollLeft <
+                                    0 ||
+                                liActive.offsetLeft +
+                                    liActive.clientWidth -
+                                    navView.scrollLeft <
+                                    liActive.clientWidth
+                            ) {
+                                const toMovePx =
+                                    liActive.offsetLeft +
+                                    liActive.clientWidth -
+                                    navView.clientWidth;
+                                navView.scrollTo(toMovePx + padding, 0);
+                            }
+                        }
+                    }
+                });
+            }
+            // 左侧树的激活样式
+            const dataTablesContainer = document.querySelector(
+                ".data-tables-container"
+            );
+            const entityTableActive =
+                dataTablesContainer &&
+                dataTablesContainer.querySelector("li.active");
+            if (dataTablesContainer) {
+                this.$nextTick(() => {
+                    const curActive = dataTablesContainer.querySelector(
+                        "li[id=" + val + "]"
+                    );
+                    entityTableActive &&
+                        entityTableActive.classList.remove("active");
+                    curActive && curActive.classList.add("active");
+                    const parentNode = dataTablesContainer.parentElement;
+                    // 如果出现滚动条
+                    if (parentNode.scrollHeight > parentNode.clientHeight) {
+                        if (curActive) {
+                            // 判断是否需要滚动
+                            if (
+                                curActive.offsetTop +
+                                    curActive.clientHeight -
+                                    parentNode.scrollTop >
+                                    parentNode.clientHeight ||
+                                curActive.offsetTop +
+                                    curActive.clientHeight -
+                                    parentNode.scrollTop <
+                                    0
+                            ) {
+                                const toMovePx =
+                                    curActive.offsetTop +
+                                    curActive.clientHeight -
+                                    parentNode.clientHeight;
+                                console.log(toMovePx);
+                                parentNode.scrollTo(0, toMovePx);
+                            }
+                        }
+                    }
+                });
+            }
             // debugger
-        }
+        },
     },
     created() {
         // 获取数据表数据
@@ -259,9 +334,9 @@ export default {
                 id: contentID,
                 name: contentNm,
                 page: pages[pageName],
-                pos:pos,
+                pos: pos,
                 datas: {
-                    scope:name,
+                    scope: name,
                     value,
                 },
             });
@@ -272,30 +347,59 @@ export default {
             this.cur_content = id;
         },
         // 关闭视图
-        closePage(view){
-            const index = this.views.findIndex(item=>{
-                return item.id===view.id
-            })
-            this.views.splice(index,1)
+        closePage(view) {
+            const index = this.views.findIndex((item) => {
+                return item.id === view.id;
+            });
+            this.views.splice(index, 1);
             // 判断删除的视图位置
             // 在开头
-            if(index===0){
-                if(this.views.length>0){
+            if (index === 0) {
+                if (this.views.length > 0) {
                     this.cur_content = this.views[0].id;
                 }
-            // 在末尾
-            }else if(index===this.views.length){
-                if(this.views.length>0){
-                    this.cur_content = this.views[this.views.length-1].id;
+                // 在末尾
+            } else if (index === this.views.length) {
+                if (this.views.length > 0) {
+                    this.cur_content = this.views[this.views.length - 1].id;
                 }
-            // 在中间
-            }else{
+                // 在中间
+            } else {
                 this.cur_content = this.views[index].id;
             }
-
-        
-
-        }
+        },
+        // 更新navstate
+        upNavState({id,up}){
+            // 表示数据以及更改
+            const idx = this.views.findIndex(view=>view.id===id)
+            if(up){
+                this.$set(this.views[idx],"unupdated",true)
+            }else{
+                // 表示数据未更改 
+                this.$set(this.views[idx],"unupdated",false)
+            }
+        },
+        // 更新view
+        upView({id,info}) {
+            // 表示数据以及更改
+            const idx = this.views.findIndex(view=>view.id===id)
+            this.$set(this.views,idx,info)
+            this.$set(this.views[idx],"unupdated",false)
+            // 设置dataTables
+            for (let i = 0; i < this.dataTables.length; i++) {
+                const dataTable = this.dataTables[i];
+                const {scope,value} = info.datas
+                if(dataTable.name===scope){
+                    for (let j = 0; j < dataTable.entities.length; j++) {
+                        const entity = dataTable.entities[j];
+                        if(entity.title===value.title){
+                            this.$set(dataTable.entities,j,value)
+                            break
+                        }
+                    }
+                }
+            }
+        },
     },
 };
 </script>
@@ -473,6 +577,7 @@ export default {
                         }
                     }
                     & > .table-dataTables {
+                        position: relative;
                         height: calc(100vh - 181px);
                         overflow: auto;
                     }
@@ -484,6 +589,8 @@ export default {
             overflow: auto;
             & > nav {
                 .nav-view {
+                    // 滚动计算需要
+                    position: relative;
                     display: flex;
                     height: 0.4rem;
                     background-color: #e5e5e5;
@@ -500,8 +607,8 @@ export default {
                         border-top: 2px #fff solid;
                         user-select: none;
 
-                        &.active{
-                            background: #D0DDF4;
+                        &.active {
+                            background: #d0ddf4;
                             border-top: 2px #5595e9 solid;
                         }
 
@@ -523,7 +630,7 @@ export default {
                             cursor: pointer;
                         }
                         i.point {
-                            margin-left: .05rem;
+                            margin-left: 0.05rem;
                             color: #989898;
                             font-weight: bold;
                             font-size: 14px;
@@ -542,11 +649,11 @@ export default {
                     height: 0.04rem;
                 }
             }
-            &>article{
-                .view-cotent{
-                    margin:0 .1rem;
+            & > article {
+                .view-cotent {
+                    margin: 0 0.1rem;
                 }
-                .view-empty{
+                .view-empty {
                     margin-top: 1rem;
                     text-align: center;
                     color: #585858;

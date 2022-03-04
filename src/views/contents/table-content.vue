@@ -19,13 +19,13 @@
                         <li>
                             <label>表名</label>
                             <div>
-                                <input v-model="tableInfo.datas.value.chnname" type="text" name="tableNm">
+                                <input autocomplete="off" v-model="tableInfo.datas.value.chnname" type="text" name="tableNm">
                             </div>
                         </li>
                         <li>
                             <label>逻辑名</label>
                             <div>
-                                <input v-model="tableInfo.datas.value.title" type="text" name="tableNm">
+                                <input disabled v-model="tableInfo.datas.value.title" type="text" name="tableNm">
                             </div>
                         </li>
                         <li>
@@ -39,16 +39,16 @@
                 <div class="colInfo animate__animated animate__fadeIn" v-show="tabActiveIndex===1">
                     <div class="col-oprt">
                         <ul>
-                            <li>
+                            <li @click="colOprtFn('up')">
                                 <i class="icon iconfont icon-xiangshangjiantoucuxiao"></i>
                             </li>
-                            <li>
+                            <li @click="colOprtFn('down')">
                                 <i class="icon iconfont icon-xiangxiajiantoucuxiao"></i>
                             </li>
-                            <li>
+                            <li @click="colOprtFn('sub')">
                                 <i class="icon iconfont icon-jian"></i>
                             </li>
-                            <li>
+                            <li @click="colOprtFn('add')">
                                 <i class="icon iconfont icon-jiajianzujianjiahao"></i>
                             </li>
                         </ul>
@@ -62,7 +62,8 @@
                                 </th>
                             </thead>
                             <tbody>
-                                <tr v-for="(field,idx) in tableContent" :key="field.id">
+                                <tr v-for="(field,idx) in tableContent" :key="field.id" @click="activeRow=idx"
+                                    :class="{'active':activeRow==idx}">
                                     <td>{{idx+1}}</td>
                                     <td v-for="header in tableHeader" :key="header.id">
                                         <div v-if="header.typeShow=='text'">
@@ -81,7 +82,7 @@
                                         </div>
                                         <div v-else-if="header.typeShow=='textarea'" class="textarea">
                                             <input type="text" v-model="field[header.fieldName]">
-                                            <div class="detail">
+                                            <div class="detail" @click="openTableColRemark(field,header.fieldName)">
                                                 <i class="icon iconfont icon-shenglvehao"></i>
                                             </div>
                                         </div>
@@ -100,8 +101,19 @@
                         </table>
                     </div>
                 </div>
-                <div class="codeInfo animate__animated animate__fadeIn" v-show="tabActiveIndex===2"></div>
-                <div class="indexInfo animate__animated animate__fadeIn" v-show="tabActiveIndex===3"></div>
+                <div class="codeInfo animate__animated animate__fadeIn" v-show="tabActiveIndex===2">
+                    <ul class="codeInfo-tabs">
+                        <li @click="codeInfoActiveCode=database.code" v-for="database in dataTypeDomains.database"
+                            :key="database.code">
+                            {{database.code}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="table-oprt">
+            <div class='btlist'>
+                <input type="button"  class='btn_thired_s' value="保存" @click="save">
             </div>
         </div>
         <!-- {{tableInfo.datas.value}} -->
@@ -111,18 +123,9 @@
 <script>
 import _ from "lodash";
 export default {
-    name:"tableContent",
+    name: "tableContent",
     props: ["link_data", "dataTypeDomains"],
     watch: {
-        link_data: {
-            handler(n, o) {
-                const newV = _.cloneDeep(n);
-                // 处理数据
-                this.tableInfo = newV;
-            },
-            immediate: true,
-            deep: true,
-        },
         typeList: {
             handler(n, o) {
                 const newV = _.cloneDeep(n);
@@ -132,6 +135,20 @@ export default {
             immediate: true,
             deep: true,
         },
+        tableInfo:{
+            handler(n, o) {
+                const {datas:nD,id:nId,name:nName} = n
+                const {datas:oD,id:oId,name:oName} = this.orgTableInfo
+                // 更新标志
+                const isUp = JSON.stringify(nD)===JSON.stringify(oD)&&oId===nId&&nName===oName
+                if(!isUp){
+                    this.$emit("upNavState",{id: n.id,up:true})
+                }else{
+                    this.$emit("upNavState",{id: n.id,up:false})
+                }
+            },
+            deep: true,
+        }
     },
 
     computed: {
@@ -218,28 +235,6 @@ export default {
             });
             return header;
         },
-        // 数据类型对象
-        // 表格数据
-        tableContent() {
-            let fields = this.tableInfo.datas.value.fields;
-            fields = fields.map((f, idx) => {
-                this.$set(f, "id", idx);
-                if (!f.relationNoShow) {
-                    this.$set(f, "relationNoShow", false);
-                }
-                if (!f.pk) {
-                    this.$set(f, "pk", false);
-                }
-                // 设置类型
-                f.dataType = this.getRowDataType(f);
-                // 设置type默认值
-                f.type = f.type || 'NONE'
-                // 设置ui设计默认值
-                f.uiAdvice = f.uiAdvice || 'NONE'
-                return f;
-            });
-            return fields;
-        },
         // 数据类型集合
         //下拉数据
         typeList() {
@@ -258,8 +253,10 @@ export default {
         return {
             // 表格信息
             tableInfo: {},
+            // 表格内容
+            tableContent:[],
             // tabActive
-            tabActiveIndex: 1,
+            tabActiveIndex: 0,
             // 下拉
             list: {
                 type: [],
@@ -278,15 +275,63 @@ export default {
                     { code: "AddressPicker", name: "地址" },
                 ],
             },
+            //激活行
+            activeRow: NaN,
+            // 字段新增模板
+            colTemplate: {
+                chnname: "",
+                dataType: "VARCHAR(32)",
+                name: "untitled",
+                pk: false,
+                relationNoShow: false,
+                remark: "",
+                type: "DefaultString",
+                uiAdvice: "NONE",
+            },
+            // 默认激活数据库
+            codeInfoActiveCode: "",
         };
     },
 
     created() {
         console.log(this.dataTypeDomains);
         console.log(this.link_data);
+
+        // 处理数据集合
+        this.tableInfo =  _.cloneDeep(this.link_data);
+
+        // 数据类型对象
+        // 表格数据
+        this.tableContent = this.setTableContent()
+
+        // 设置默认数据库为激活页签
+        this.codeInfoActiveCode = this.defaultDatabase?.code;
+
+        // 设置初始化传输数据用于比较
+        this.orgTableInfo = _.cloneDeep(this.tableInfo);
     },
 
     methods: {
+        // 设置表格数据
+        setTableContent(){
+            let fields = this.tableInfo.datas.value.fields;
+            fields.forEach((f, idx) => {
+                this.$set(f, "id", idx);
+                if (!f.relationNoShow) {
+                    this.$set(f, "relationNoShow", false);
+                }
+                if (!f.pk) {
+                    this.$set(f, "pk", false);
+                }
+                // 设置类型
+                f.dataType = this.getRowDataType(f);
+                // 设置type默认值
+                f.type = f.type || "NONE";
+                // 设置ui设计默认值
+                f.uiAdvice = f.uiAdvice || "NONE";
+            });
+            return fields;
+        },
         // 获取row dataType
         getRowDataType(row) {
             const dataItem = this.typeList.find((dataItem) => {
@@ -294,11 +339,82 @@ export default {
             });
             return dataItem?.apply[this?.defaultDatabase?.code]?.type || "";
         },
+        // 打开表字段说明
+        openTableColRemark(field, col) {
+            const value = field[col] || "";
+            this.$store.commit("openDialog", {
+                id: "tableColRemark",
+                initdata: value,
+                callback: (reVal) => {
+                    field[col] = reVal || value;
+                },
+                noShade: false,
+            });
+        },
+        // 表字段操作
+        colOprtFn(act) {
+            const fields = this.tableContent;
+            if (act === "up") {
+                // 向上
+                if (isNaN(this.activeRow)) {
+                    this.toast("info", "提示", "请选择移动字段");
+                } else {
+                    if (this.activeRow !== 0) {
+                        const optRow = _.cloneDeep(fields[this.activeRow]);
+                        fields.splice(this.activeRow, 1);
+                        this.activeRow = this.activeRow - 1;
+                        fields.splice(this.activeRow, 0, optRow);
+                    } else {
+                        this.toast("info", "提示", "移动字段已经处于最上层");
+                    }
+                }
+            } else if (act === "down") {
+                // 向下
+                if (isNaN(this.activeRow)) {
+                    this.toast("info", "提示", "请选择移动字段");
+                } else {
+                    if (this.activeRow !== fields.length - 1) {
+                        const optRow = _.cloneDeep(fields[this.activeRow]);
+                        fields.splice(this.activeRow, 1);
+                        this.activeRow = this.activeRow + 1;
+                        fields.splice(this.activeRow, 0, optRow);
+                    } else {
+                        this.toast("info", "提示", "移动字段已经处于最下层");
+                    }
+                }
+            } else if (act === "sub") {
+                // 针对删除-- 如果activeRow为NaN提示
+                if (isNaN(this.activeRow)) {
+                    this.toast("info", "提示", "请选择删除字段");
+                } else {
+                    fields.splice(this.activeRow, 1);
+                    if (fields.length - 1 < this.activeRow) {
+                        this.activeRow = NaN;
+                    }
+                }
+            } else if (act === "add") {
+                // 针对新增-- 如果activeRow为NaN,直接在最后添加,否则在其后添加
+                const temp = _.cloneDeep(this.colTemplate);
+                if (isNaN(this.activeRow)) {
+                    fields.push(temp);
+                } else {
+                    fields.splice(this.activeRow + 1, 0, temp);
+                }
+            }
+        },
+        //保存
+        save(){
+            this.$emit("upView",{id: this.tableInfo.id,info:_.cloneDeep(this.tableInfo)})
+            this.orgTableInfo = _.cloneDeep(this.tableInfo);
+        }
     },
 };
 </script>
 
 <style lang="scss" scoped>
+input:disabled{
+    background-color:#eee;
+}
 .data-table {
     color: #555;
     user-select: none;
@@ -306,6 +422,9 @@ export default {
         font-size: 14px;
         height: 0.3rem;
         line-height: 0.3rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .table-content-wrapper {
         .table-content-tabs {
@@ -410,6 +529,12 @@ export default {
                             height: 0.25rem;
                             line-height: 0.25rem;
                         }
+                        tr:hover {
+                            background-color: #f1f4fa;
+                        }
+                        tr.active {
+                            background-color: #d0ddf4;
+                        }
                         td {
                             color: #666;
                             border: 1px solid #ccc;
@@ -441,6 +566,33 @@ export default {
                     }
                 }
             }
+            .codeInfo{
+                .codeInfo-tabs{
+                    margin-top:.12rem;
+                    display: flex;
+                    flex-direction: row;
+                    height: 0.26rem;
+                    line-height: 0.26rem;
+                    border-top: 1px solid #111;
+                    border-bottom: 1px solid #111;
+                    li {
+                        background-color: #ccc;
+                        border-right: 2px #aaa solid;
+                        padding: 0 0.1rem;
+                        font-size: 14px;
+                        cursor: pointer;
+                        &.active {
+                            background-color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .table-oprt{
+        .btlist{
+            text-align: center;
+            margin-top: .1rem;
         }
     }
 }
