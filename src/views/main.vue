@@ -93,12 +93,21 @@
                                 'icon-guanxitu':view.pos==='graph',
                             }"></i>
                             <a :title="view.name">
-                                {{view.name}}--{{view.unupdated}}
+                                {{view.name}}
                             </a>
                             <!-- 关闭内容 -->
-                            <i class="close icon iconfont icon-guanbi2" :class="{ active: cur_content==view.id }"
-                                @click.stop="closePage(view)">
-                            </i>
+                            <span class="close-wrap">
+                                <i class="close icon iconfont closeA"
+                                :class="{ 
+                                    'icon-guanbi2':!view.unupdated,
+                                    'icon-yuandianzhong':view.unupdated,
+                                    }"
+                                    @click.stop="closePage(view)">
+                                </i>     
+                                <i class="close icon iconfont icon-guanbi2 closeB"
+                                    @click.stop="closePage(view)">
+                                </i>     
+                            </span>                    
                         </li>
                     </ul>
                 </nav>
@@ -286,27 +295,33 @@ export default {
         },
         // 获取数据表数据
         queryDataTables() {
-            this.$remote.post(remoteUrl.QUERY_DATA_TABLES, {}, (res) => {
-                const {
-                    data: { code, data },
-                } = res;
-                if (code == "000000") {
-                    const { modules } = data;
-                    this.dataTables = modules;
-                }
-            });
+            import("../../mock/student.json").then(student=>{
+                this.dataTables = student.modules
+            })
+            // this.$remote.post(remoteUrl.QUERY_DATA_TABLES, {}, (res) => {
+            //     const {
+            //         data: { code, data },
+            //     } = res;
+            //     if (code == "000000") {
+            //         const { modules } = data;
+            //         this.dataTables = modules;
+            //     }
+            // });
         },
         // 获取数据类型数据域
         queryDataTypeDomains() {
-            this.$remote.post(remoteUrl.QUERY_DATA_TYPE_DOMAINS, {}, (res) => {
-                const {
-                    data: { code, data },
-                } = res;
-                if (code == "000000") {
-                    const { dataTypeDomains } = data;
-                    this.dataTypeDomains = dataTypeDomains;
-                }
-            });
+            import("../../mock/student.json").then(student=>{
+                this.dataTypeDomains = student.dataTypeDomains
+            })
+            // this.$remote.post(remoteUrl.QUERY_DATA_TYPE_DOMAINS, {}, (res) => {
+            //     const {
+            //         data: { code, data },
+            //     } = res;
+            //     if (code == "000000") {
+            //         const { dataTypeDomains } = data;
+            //         this.dataTypeDomains = dataTypeDomains;
+            //     }
+            // });
         },
         // 打开内容
         openContent(params) {
@@ -619,6 +634,9 @@ export default {
                             i.close {
                                 color: red;
                             }
+                            i.icon-yuandianzhong {
+                                color: #fff;
+                            }
                         }
                         a {
                             display: inline-block;
@@ -639,9 +657,29 @@ export default {
                             }
                         }
                         i.close {
-                            color: #cccc;
+                            color: #ccc;
                             margin: 0 0.05rem 0 0;
                             cursor: pointer;
+                        }
+
+                        i.icon-yuandianzhong {
+                                color: #fff;
+                            }
+ 
+                        .close-wrap{
+                            i.close.closeB{
+                                display: none;
+                            }
+                    
+                        }
+
+                        .close-wrap:hover{
+                            i.close.closeA {
+                                display: none;
+                            }
+                            i.close.closeB{
+                                display: inline-block;
+                            }
                         }
                     }
                 }

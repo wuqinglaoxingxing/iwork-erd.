@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "681206",
+      "name": "圆点中",
+      "font_class": "yuandianzhong",
+      "unicode": "e758",
+      "unicode_decimal": 59224
+    },
+    {
       "icon_id": "10666917",
       "name": "成功",
       "font_class": "chenggong",
@@ -88,6 +95,13 @@
       "font_class": "guanbi2",
       "unicode": "e60a",
       "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "1920286",
+      "name": "点",
+      "font_class": "dian1",
+      "unicode": "e608",
+      "unicode_decimal": 58888
     },
     {
       "icon_id": "2076220",

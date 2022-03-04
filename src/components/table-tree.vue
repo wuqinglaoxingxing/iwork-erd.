@@ -55,7 +55,6 @@ export default {
     watch: {
         dataTables: {
             handler(n, o) {
-                debugger
                 const newV = _.cloneDeep(n);
                 // 处理数据
                 this.setDataTablesTmp(newV);
