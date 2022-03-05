@@ -19,7 +19,8 @@
                         <li>
                             <label>表名</label>
                             <div>
-                                <input autocomplete="off" v-model="tableInfo.datas.value.chnname" type="text" name="tableNm">
+                                <input autocomplete="off" v-model="tableInfo.datas.value.chnname" type="text"
+                                    name="tableNm">
                             </div>
                         </li>
                         <li>
@@ -102,18 +103,29 @@
                     </div>
                 </div>
                 <div class="codeInfo animate__animated animate__fadeIn" v-show="tabActiveIndex===2">
-                    <ul class="codeInfo-tabs">
+                    <ul class="codeInfo-tabs-db">
                         <li @click="codeInfoActiveCode=database.code" v-for="database in dataTypeDomains.database"
-                            :key="database.code">
+                            :key="database.code" :class="{'active':codeInfoActiveCode===database.code}">
                             {{database.code}}
                         </li>
                     </ul>
+                    <ul class="codeInfo-tabs-tmp">
+                        <li v-for="descSeq in codeDescSeq"
+                            @click="codeInfoActiveTmp=descSeq"
+                            :key="descSeq" :class="{'active':codeInfoActiveTmp===descSeq}">
+                            {{codeDesc[descSeq]}}
+                        </li>
+                    </ul>
+                    <!-- todo -->
+                    <textarea v-model="aaa" disabled>
+
+                    </textarea>
                 </div>
             </div>
         </div>
         <div class="table-oprt">
             <div class='btlist'>
-                <input type="button"  class='btn_thired_s' value="保存" @click="save">
+                <input type="button" class='btn_thired_s' value="保存" @click="save">
             </div>
         </div>
         <!-- {{tableInfo.datas.value}} -->
@@ -135,20 +147,23 @@ export default {
             immediate: true,
             deep: true,
         },
-        tableInfo:{
+        tableInfo: {
             handler(n, o) {
-                const {datas:nD,id:nId,name:nName} = n
-                const {datas:oD,id:oId,name:oName} = this.orgTableInfo
+                const { datas: nD, id: nId, name: nName } = n;
+                const { datas: oD, id: oId, name: oName } = this.orgTableInfo;
                 // 更新标志
-                const isUp = JSON.stringify(nD)===JSON.stringify(oD)&&oId===nId&&nName===oName
-                if(!isUp){
-                    this.$emit("upNavState",{id: n.id,up:true})
-                }else{
-                    this.$emit("upNavState",{id: n.id,up:false})
+                const isUp =
+                    JSON.stringify(nD) === JSON.stringify(oD) &&
+                    oId === nId &&
+                    nName === oName;
+                if (!isUp) {
+                    this.$emit("upNavState", { id: n.id, up: true });
+                } else {
+                    this.$emit("upNavState", { id: n.id, up: false });
                 }
             },
             deep: true,
-        }
+        },
     },
 
     computed: {
@@ -248,15 +263,20 @@ export default {
                 return db.defaultDatabase;
             });
         },
+        aaa(){
+            const { database } = this.dataTypeDomains;
+            const db = database.find(db=>this.codeInfoActiveCode===db.code)
+            return db[this.codeInfoActiveTmp]
+        }
     },
     data() {
         return {
             // 表格信息
             tableInfo: {},
             // 表格内容
-            tableContent:[],
+            tableContent: [],
             // tabActive
-            tabActiveIndex: 0,
+            tabActiveIndex: 2,
             // 下拉
             list: {
                 type: [],
@@ -290,19 +310,38 @@ export default {
             },
             // 默认激活数据库
             codeInfoActiveCode: "",
+            codeInfoActiveTmp:"createTableTemplate",
+            // 代码描述
+            codeDescSeq: [
+                "createTableTemplate",
+                "deleteTableTemplate",
+                "createIndexTemplate",
+                "deleteIndexTemplate",
+                "rebuildTableTemplate",
+                "createFieldTemplate",
+                "deleteFieldTemplate",
+                "updateFieldTemplate",
+            ],
+            codeDesc: {
+                createTableTemplate: "新建数据表代码",
+                deleteTableTemplate: "删除数据表代码",
+                createIndexTemplate: "新建索引代码",
+                deleteIndexTemplate: "删除索引代码",
+                rebuildTableTemplate: "重建数据表代码",
+                createFieldTemplate: "新建字段代码",
+                deleteFieldTemplate: "删除字段代码",
+                updateFieldTemplate: "修改字段代码",
+            },
         };
     },
 
     created() {
-        console.log(this.dataTypeDomains);
-        console.log(this.link_data);
-
         // 处理数据集合
-        this.tableInfo =  _.cloneDeep(this.link_data);
+        this.tableInfo = _.cloneDeep(this.link_data);
 
         // 数据类型对象
         // 表格数据
-        this.tableContent = this.setTableContent()
+        this.tableContent = this.setTableContent();
 
         // 设置默认数据库为激活页签
         this.codeInfoActiveCode = this.defaultDatabase?.code;
@@ -313,7 +352,7 @@ export default {
 
     methods: {
         // 设置表格数据
-        setTableContent(){
+        setTableContent() {
             let fields = this.tableInfo.datas.value.fields;
             fields.forEach((f, idx) => {
                 this.$set(f, "id", idx);
@@ -403,17 +442,20 @@ export default {
             }
         },
         //保存
-        save(){
-            this.$emit("upView",{id: this.tableInfo.id,info:_.cloneDeep(this.tableInfo)})
+        save() {
+            this.$emit("upView", {
+                id: this.tableInfo.id,
+                info: _.cloneDeep(this.tableInfo),
+            });
             this.orgTableInfo = _.cloneDeep(this.tableInfo);
-        }
+        },
     },
 };
 </script>
 
 <style lang="scss" scoped>
-input:disabled{
-    background-color:#eee;
+input:disabled {
+    background-color: #eee;
 }
 .data-table {
     color: #555;
@@ -566,12 +608,13 @@ input:disabled{
                     }
                 }
             }
-            .codeInfo{
-                .codeInfo-tabs{
-                    margin-top:.12rem;
+            .codeInfo {
+                .codeInfo-tabs-db,.codeInfo-tabs-tmp {
+                    margin-top: 0.12rem;
                     display: flex;
+                    flex-wrap: wrap;
                     flex-direction: row;
-                    height: 0.26rem;
+                    height: 0.28rem;
                     line-height: 0.26rem;
                     border-top: 1px solid #111;
                     border-bottom: 1px solid #111;
@@ -579,20 +622,25 @@ input:disabled{
                         background-color: #ccc;
                         border-right: 2px #aaa solid;
                         padding: 0 0.1rem;
-                        font-size: 14px;
+                        white-space: nowrap;
+                        font-size: 12px;
                         cursor: pointer;
                         &.active {
                             background-color: #fff;
                         }
                     }
                 }
+                textarea{
+                    width: 100%;
+                     min-height: 2rem;
+                }
             }
         }
     }
-    .table-oprt{
-        .btlist{
+    .table-oprt {
+        .btlist {
             text-align: center;
-            margin-top: .1rem;
+            margin-top: 0.1rem;
         }
     }
 }

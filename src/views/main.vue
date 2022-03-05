@@ -635,7 +635,7 @@ export default {
                                 color: red;
                             }
                             i.icon-yuandianzhong {
-                                color: #fff;
+                                color: #bfbfbf;
                             }
                         }
                         a {
@@ -663,7 +663,7 @@ export default {
                         }
 
                         i.icon-yuandianzhong {
-                                color: #fff;
+                                color: #bfbfbf;
                             }
  
                         .close-wrap{
