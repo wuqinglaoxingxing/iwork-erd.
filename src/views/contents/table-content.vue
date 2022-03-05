@@ -632,7 +632,8 @@ input:disabled {
                 }
                 textarea{
                     width: 100%;
-                     min-height: 2rem;
+                    margin-top: .1rem;
+                    min-height: 2rem;
                 }
             }
         }
