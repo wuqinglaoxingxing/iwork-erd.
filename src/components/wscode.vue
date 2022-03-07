@@ -22,7 +22,7 @@ export default {
     },
     data() {
         return {
-            // code: ""
+            code: "",
             cmOptions: {
                 // codemirror options
                 tabSize: 4,
@@ -38,13 +38,20 @@ export default {
             },
         };
     },
+    watch:{
+       "data": {
+           handler(n, o) {
+                this.code = _.cloneDeep(n);
+                // 处理数据
+            },
+            immediate: true,
+            deep: true,
+       },
+    },
     computed: {
         codemirror() {
             return this.$refs.wscode.codemirror;
         },
-        code(){
-            return this.data
-        }
     },
     methods: {
         format() {
