@@ -117,9 +117,7 @@
                         </li>
                     </ul>
                     <!-- todo -->
-                    <textarea v-model="aaa" disabled>
-
-                    </textarea>
+                    <wscode :data="codeTemp"></wscode>
                 </div>
             </div>
         </div>
@@ -134,9 +132,13 @@
 
 <script>
 import _ from "lodash";
+import wscode from "@/components/wscode";
 export default {
     name: "tableContent",
     props: ["link_data", "dataTypeDomains"],
+    components: {
+        wscode,
+    },
     watch: {
         typeList: {
             handler(n, o) {
@@ -263,7 +265,7 @@ export default {
                 return db.defaultDatabase;
             });
         },
-        aaa(){
+        codeTemp(){
             const { database } = this.dataTypeDomains;
             const db = database.find(db=>this.codeInfoActiveCode===db.code)
             return db[this.codeInfoActiveTmp]
@@ -629,11 +631,6 @@ input:disabled {
                             background-color: #fff;
                         }
                     }
-                }
-                textarea{
-                    width: 100%;
-                    margin-top: .1rem;
-                    min-height: 2rem;
                 }
             }
         }
