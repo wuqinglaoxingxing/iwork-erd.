@@ -278,7 +278,7 @@ export default {
             // 表格内容
             tableContent: [],
             // tabActive
-            tabActiveIndex: 2,
+            tabActiveIndex: 0,
             // 下拉
             list: {
                 type: [],

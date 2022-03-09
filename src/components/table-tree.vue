@@ -82,6 +82,10 @@ export default {
         },
         // 打开内容区域
         openContent(pos,name,value){
+            // 对于视图需要添加实体数据，供后续使用
+            if(pos==="graph"){
+                value.entities = this.dataTables.find(dataTable=>dataTable.name===name).entities;
+            }
             this.$emit("open-content",{pos,name,value});
         }
     },

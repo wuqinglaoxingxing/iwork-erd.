@@ -1317,84 +1317,77 @@
       "graphCanvas": {
         "nodes": [
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_USER",
             "x": 570,
             "y": 610,
             "id": "730ae5d1"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_ORG",
             "x": 550,
             "y": 150,
             "id": "d764e0e8"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_USER_BEHAVIOR",
             "x": 990,
             "y": 920,
             "id": "b8699936"
           },
           {
-            "shape": "table",
-            "title": "AUTH_USER:1",
-            "x": 580,
-            "y": 1020,
-            "id": "02bd0be0"
-          },
-          {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_USER_PROPERTY",
             "x": 240,
             "y": 890,
             "id": "d0d16163"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_ORG_PROPERTY",
             "x": 210,
             "y": 10,
             "id": "49537dcc"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_ROLE",
             "x": 1250,
             "y": 80,
             "id": "5a939458"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_PERMIT",
             "x": 1610,
             "y": 400,
             "id": "d04ae19c"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_ROLE_PERMIT",
             "x": 1600,
             "y": 160,
             "id": "e1f62571"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_USER_PERMIT",
             "x": 1090,
             "y": 470,
             "id": "6a57c00e"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_USER_ACCOUNT",
             "x": 990,
             "y": 1110,
             "id": "5deddee1"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "AUTH_USER_ROLE",
             "x": 900,
             "y": 20,
@@ -2671,49 +2664,49 @@
       "graphCanvas": {
         "nodes": [
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_COLLEGE",
             "x": 300,
             "y": 170,
             "id": "f356194d"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_CLASS",
             "x": 730,
             "y": 270,
             "id": "c6f5e944"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_MAJOR",
             "x": 320,
             "y": 450,
             "id": "baf114f5"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_TEACHER",
             "x": 70,
             "y": 718.5714285714287,
             "id": "648a2afa"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_INSTRUCT",
             "x": 510,
             "y": 700,
             "id": "53ab8034"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_LESSON",
             "x": 510,
             "y": 930,
             "id": "7960c89f"
           },
           {
-            "shape": "table",
+            "type": "sql-node",
             "title": "SIMS_STUDENT",
             "x": 1200,
             "y": 450,

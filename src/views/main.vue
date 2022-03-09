@@ -125,7 +125,6 @@
     </div>
 </template>
 <script>
-import LogicFlow from "@logicflow/core";
 import "@logicflow/core/dist/style/index.css";
 
 import remoteUrl from "@/service/remoteUrl";
@@ -254,39 +253,6 @@ export default {
         this.queryDataTypeDomains();
     },
 
-    mounted() {
-        // const lf = new LogicFlow({
-        //     container: document.querySelector("#lFow"),
-        //     grid: true,
-        // });
-        // lf.render({
-        //     nodes: [
-        //         {
-        //             id: "1",
-        //             type: "rect",
-        //             x: 100,
-        //             y: 100,
-        //             text: "节点1",
-        //         },
-        //         {
-        //             id: "2",
-        //             type: "circle",
-        //             x: 300,
-        //             y: 200,
-        //             text: "节点2",
-        //         },
-        //     ],
-        //     edges: [
-        //         {
-        //             sourceNodeId: "1",
-        //             targetNodeId: "2",
-        //             type: "polyline",
-        //             text: "连线",
-        //         },
-        //     ],
-        // });
-    },
-
     methods: {
         // 返回 首页
         backToHome() {
@@ -340,7 +306,7 @@ export default {
             this.cur_content = contentID;
 
             let pageName = {
-                graph: "graphCanvas-content",
+                graph: "graph-content",
                 tbl: "table-content",
             }[pos];
 
@@ -698,8 +664,5 @@ export default {
             }
         }
     }
-}
-#lFow {
-    height: 100vh;
 }
 </style>

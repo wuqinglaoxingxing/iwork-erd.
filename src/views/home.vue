@@ -32,7 +32,7 @@
 export default {
     methods: {
         toMain() {
-            this.$router.push({ path: "/main" });
+            this.$router.push({ path: "/workbench" });
         },
     },
 };

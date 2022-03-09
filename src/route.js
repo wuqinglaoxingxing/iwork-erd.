@@ -20,7 +20,7 @@ const router = new VueRouter({
         {
 
             // 交易主界面
-            path: '/main',
+            path: '/workbench',
             component: main
         },
         {

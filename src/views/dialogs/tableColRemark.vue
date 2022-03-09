@@ -1,5 +1,5 @@
 <template>
-    <div class="warning">
+    <div class="col-detail animate__animated animate__fadeInDown">
         <h2 v-dragdrop>
             说明详情
             <span @click="$store.commit('closeDialog')">
@@ -34,7 +34,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "@/style/dialog.scss";
-.warning {
+.col-detail {
     min-width: 55vw;
     max-width: 80vw;
     margin: auto;

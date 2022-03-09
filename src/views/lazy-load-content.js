@@ -8,7 +8,7 @@
 // 你需要在这里注册全部的内容
 export default {
     
-"graphCanvas-content":() => import("./contents/graphCanvas-content.vue"),
+"graph-content":() => import("./contents/graph-content.vue"),
 "table-content":() => import("./contents/table-content.vue"),
 
 };

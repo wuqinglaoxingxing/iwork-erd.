@@ -1,5 +1,5 @@
 <template>
-    <div class="warning">
+    <div class="warning animate__animated animate__fadeInDown">
         <h2 v-dragdrop>
             {{data[2]}}
             <span @click="$store.commit('closeDialog')">
