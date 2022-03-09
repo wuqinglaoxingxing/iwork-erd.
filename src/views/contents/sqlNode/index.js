@@ -55,7 +55,10 @@ class SqlNodeModel extends HtmlNodeModel {
         // 在super.initNodeData之前，对图数据进行处理。
         // 在super.initNodeData之后，对节点属性进行初始化
         super.initNodeData(data);
+        this.text.draggable = false; // 不允许文本被拖动
+        this.text.editable = false; // 不允许文本被编辑
     }
+    
     /**
      * 给model自定义添加字段方法
      */
