@@ -21,6 +21,7 @@
             </div>
         </div>
 
+        <input type="file" id="importFile" style="display: none;">
     </div>
 </template>
 <script>
