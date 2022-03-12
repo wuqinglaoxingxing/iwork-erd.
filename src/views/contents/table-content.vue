@@ -102,7 +102,7 @@
                         </table>
                     </div>
                 </div>
-                <div class="codeInfo animate__animated animate__fadeIn" v-show="tabActiveIndex===2">
+                <div class="codeInfo animate__animated animate__fadeIn" v-if="tabActiveIndex===2">
                     <ul class="codeInfo-tabs-db">
                         <li @click="codeInfoActiveCode=database.code" v-for="database in dataTypeDomains.database"
                             :key="database.code" :class="{'active':codeInfoActiveCode===database.code}">
@@ -268,7 +268,7 @@ export default {
         codeTemp(){
             const { database } = this.dataTypeDomains;
             const db = database.find(db=>this.codeInfoActiveCode===db.code)
-            return db[this.codeInfoActiveTmp]
+            return db[this.codeInfoActiveTmp]||''
         }
     },
     data() {
