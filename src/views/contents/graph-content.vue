@@ -5,7 +5,7 @@
         <div class="lFow-oprt-wrapper">
             <ul class="oprt-items">
                 <li @click="importFile">
-                    <i class="icon iconfont icon-dakaiwenjian"></i>
+                    <i class="icon iconfont icon-open"></i>
                 </li>
             </ul>
             <ul class="oprt-items">

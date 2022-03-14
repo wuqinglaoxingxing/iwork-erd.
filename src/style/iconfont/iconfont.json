@@ -6,11 +6,32 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "4126777",
+      "icon_id": "1223968",
       "name": "打开文件",
       "font_class": "dakaiwenjian",
-      "unicode": "e67b",
-      "unicode_decimal": 59003
+      "unicode": "e666",
+      "unicode_decimal": 58982
+    },
+    {
+      "icon_id": "4039854",
+      "name": "4打开文件",
+      "font_class": "dakaiwenjian11",
+      "unicode": "e605",
+      "unicode_decimal": 58885
+    },
+    {
+      "icon_id": "6409954",
+      "name": "009,打开文件夹,打开项目",
+      "font_class": "icon-test",
+      "unicode": "e6b5",
+      "unicode_decimal": 59061
+    },
+    {
+      "icon_id": "587011",
+      "name": "open",
+      "font_class": "open",
+      "unicode": "e79f",
+      "unicode_decimal": 59295
     },
     {
       "icon_id": "6219934",
