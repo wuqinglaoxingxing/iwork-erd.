@@ -137,7 +137,7 @@ export default {
             background-position: center;
             background-repeat:no-repeat;
             background-size:contain;
-            background-image: url(../asset/web-development.png);
+            background-image: url(../asset/server-rafiki.png);
         }
     }
 }
