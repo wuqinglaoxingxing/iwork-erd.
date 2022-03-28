@@ -1,3 +1,4 @@
+const path = require('path')
 const {
     VueLoaderPlugin
 } = require('vue-loader');
@@ -6,18 +7,19 @@ const {
 } = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const taskLoaderPlugin = require('./task/task-loader-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: ['./src/main.js'],
     output: {
-        path: __dirname,
+        path: path.resolve(__dirname, './dist'),
         filename: 'build/main.js',
         chunkFilename: 'build/bundle.[name].[chunkhash].js'
     },
     resolve: {
         extensions: ['.js', '.vue', '.json'],
         alias: {
-            '@': require('path').resolve(__dirname, 'src')
+            '@': path.resolve(__dirname, 'src')
         }
     },
     module: {
@@ -65,6 +67,10 @@ module.exports = {
         }),
         new DefinePlugin({
             BASE_URL:"'/'",
-        })
+        }),
+        new CopyWebpackPlugin([
+            { from: "script", to: "script" },
+            { from: "logo.png", to: "logo.png" }
+        ])
     ]
 };

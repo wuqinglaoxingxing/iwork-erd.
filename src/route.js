@@ -11,7 +11,7 @@ const main = () => import('./views/main.vue')
 
 // 配置路由
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     routes: [{
             // 登录
             path: '/home',
