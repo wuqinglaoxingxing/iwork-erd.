@@ -1,6 +1,6 @@
 <template>
     <div class="main">
-        <div class="main-header">
+        <!-- <div class="main-header">
             <div class="main-header-save">
                 <i class="icon iconfont icon-save" style="color:#5988C9;"></i>
                 <span>保存</span>
@@ -49,35 +49,62 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="main-content-container">
-            <div class="main-content-left-tab" :class="{'close':!closeOrOpenShow}">
+            <div
+                class="main-content-left-tab"
+                :class="{ close: !closeOrOpenShow }"
+            >
                 <div class="left-tab-header">
                     <div class="left-tab-header-icons">
-                        <i class="icon iconfont icon-xiangzuo pointer" :class="{'fanzhuan':!closeOrOpenShow}"
-                            @click="closeOrOpenShow=!closeOrOpenShow"></i>
+                        <i
+                            class="icon iconfont icon-xiangzuo pointer"
+                            :class="{ fanzhuan: !closeOrOpenShow }"
+                            @click="closeOrOpenShow = !closeOrOpenShow"
+                        ></i>
                         <i class="icon iconfont icon-shuaxin1 pointer"></i>
                     </div>
-                    <div class="left-tab-header-names" :class="{'hidden':!closeOrOpenShow}">
-                        <div class="name-title pointer" :class="{'active':tabNameActive===1}" @click="tabNameActive=1">
-                            <i class="icon iconfont icon-shuju_biao">&nbsp;数据表</i>
+                    <div
+                        class="left-tab-header-names"
+                        :class="{ hidden: !closeOrOpenShow }"
+                    >
+                        <div
+                            class="name-title pointer"
+                            :class="{ active: tabNameActive === 1 }"
+                            @click="tabNameActive = 1"
+                        >
+                            <i class="icon iconfont icon-shuju_biao"
+                                >&nbsp;数据表</i
+                            >
                         </div>
-                        <div class="name-title pointer" :class="{'active':tabNameActive===2}" @click="tabNameActive=2">
-                            <i class="icon iconfont icon-shujuyu">&nbsp;数据域</i>
+                        <div
+                            class="name-title pointer"
+                            :class="{ active: tabNameActive === 2 }"
+                            @click="tabNameActive = 2"
+                        >
+                            <i class="icon iconfont icon-shujuyu"
+                                >&nbsp;数据域</i
+                            >
                         </div>
                     </div>
                 </div>
-                <div class="left-tab-body" :class="{'hidden':!closeOrOpenShow}">
-                    <div class="data-table" v-show="tabNameActive===1">
+                <div
+                    class="left-tab-body"
+                    :class="{ hidden: !closeOrOpenShow }"
+                >
+                    <div class="data-table" v-show="tabNameActive === 1">
                         <div class="table-search">
-                            <input type="text" placeholder="快速搜索数据表">
+                            <input type="text" placeholder="快速搜索数据表" />
                         </div>
                         <div class="table-dataTables">
-                            <tableTree @open-content='openContent' :dataTables="dataTables"
-                                :dataTypeDomains="dataTypeDomains"></tableTree>
+                            <tableTree
+                                @open-content="openContent"
+                                :dataTables="dataTables"
+                                :dataTypeDomains="dataTypeDomains"
+                            ></tableTree>
                         </div>
                     </div>
-                    <div class="data-area" v-show="tabNameActive===2">
+                    <div class="data-area" v-show="tabNameActive === 2">
                         222
                     </div>
                 </div>
@@ -85,41 +112,69 @@
             <div class="main-content-right-tab">
                 <!-- 选项卡 -->
                 <nav>
-                    <ul class="nav-view" v-if="views.length>0" ref="navView">
-                        <li v-for="(view) in views" :key="view.id" :name="view.name" class="point" :view-id="view.id"
-                            @click="turnToPage(view)" :class="{ active: cur_content==view.id }">
-                            <i class="point icon iconfont" :class="{ 
-                                'icon-biaodanzujian-biaoge': view.pos==='tbl',
-                                'icon-guanxitu':view.pos==='graph',
-                            }"></i>
+                    <ul class="nav-view" v-if="views.length > 0" ref="navView">
+                        <li
+                            v-for="view in views"
+                            :key="view.id"
+                            :name="view.name"
+                            class="point"
+                            :view-id="view.id"
+                            @click="turnToPage(view)"
+                            :class="{ active: cur_content == view.id }"
+                        >
+                            <i
+                                class="point icon iconfont"
+                                :class="{
+                                    'icon-biaodanzujian-biaoge':
+                                        view.pos === 'tbl',
+                                    'icon-guanxitu': view.pos === 'graph',
+                                }"
+                            ></i>
                             <a :title="view.name">
-                                {{view.name}}
+                                {{ view.name }}
                             </a>
                             <!-- 关闭内容 -->
                             <span class="close-wrap">
-                                <i class="close icon iconfont closeA"
-                                :class="{ 
-                                    'icon-guanbi2':!view.unupdated,
-                                    'icon-yuandianzhong':view.unupdated,
+                                <i
+                                    class="close icon iconfont closeA"
+                                    :class="{
+                                        'icon-guanbi2': !view.unupdated,
+                                        'icon-yuandianzhong': view.unupdated,
                                     }"
-                                    @click.stop="closePage(view)">
-                                </i>     
-                                <i class="close icon iconfont icon-guanbi2 closeB"
-                                    @click.stop="closePage(view)">
-                                </i>     
-                            </span>                    
+                                    @click.stop="closePage(view)"
+                                >
+                                </i>
+                                <i
+                                    class="close icon iconfont icon-guanbi2 closeB"
+                                    @click.stop="closePage(view)"
+                                >
+                                </i>
+                            </span>
                         </li>
                     </ul>
                 </nav>
                 <article>
-                    <div class="view-cotent" :view-id="view.id" :key="view.id" v-show="cur_content==view.id"
-                        :class="{ active: cur_content==view.id }" v-for="view in views">
-                        <component v-bind:is="view.page" v-bind:link_data="view" @upView="upView" @upNavState="upNavState"
-                            :dataTypeDomains="dataTypeDomains" class="animate__animated animate__fadeIn"></component>
+                    <div
+                        class="view-cotent"
+                        :view-id="view.id"
+                        :key="view.id"
+                        v-show="cur_content == view.id"
+                        :class="{ active: cur_content == view.id }"
+                        v-for="view in views"
+                    >
+                        <component
+                            v-bind:is="view.page"
+                            v-bind:link_data="view"
+                            @upView="upView"
+                            @upNavState="upNavState"
+                            :dataTypeDomains="dataTypeDomains"
+                            class="animate__animated animate__fadeIn"
+                        ></component>
                     </div>
-                    <div v-show="views.length===0" class="view-empty">双击左侧树图开始工作吧</div>
+                    <div v-show="views.length === 0" class="view-empty">
+                        双击左侧树图开始工作吧
+                    </div>
                 </article>
-
             </div>
         </div>
     </div>
@@ -260,9 +315,9 @@ export default {
         },
         // 获取数据表数据
         queryDataTables() {
-            import("../../mock/student.json").then(student=>{
-                this.dataTables = student.modules
-            })
+            import("../../mock/student.json").then((student) => {
+                this.dataTables = student.modules;
+            });
             // this.$remote.post(remoteUrl.QUERY_DATA_TABLES, {}, (res) => {
             //     const {
             //         data: { code, data },
@@ -275,9 +330,9 @@ export default {
         },
         // 获取数据类型数据域
         queryDataTypeDomains() {
-            import("../../mock/student.json").then(student=>{
-                this.dataTypeDomains = student.dataTypeDomains
-            })
+            import("../../mock/student.json").then((student) => {
+                this.dataTypeDomains = student.dataTypeDomains;
+            });
             // this.$remote.post(remoteUrl.QUERY_DATA_TYPE_DOMAINS, {}, (res) => {
             //     const {
             //         data: { code, data },
@@ -349,32 +404,32 @@ export default {
             }
         },
         // 更新navstate
-        upNavState({id,up}){
+        upNavState({ id, up }) {
             // 表示数据以及更改
-            const idx = this.views.findIndex(view=>view.id===id)
-            if(up){
-                this.$set(this.views[idx],"unupdated",true)
-            }else{
-                // 表示数据未更改 
-                this.$set(this.views[idx],"unupdated",false)
+            const idx = this.views.findIndex((view) => view.id === id);
+            if (up) {
+                this.$set(this.views[idx], "unupdated", true);
+            } else {
+                // 表示数据未更改
+                this.$set(this.views[idx], "unupdated", false);
             }
         },
         // 更新view
-        upView({id,info}) {
+        upView({ id, info }) {
             // 表示数据以及更改
-            const idx = this.views.findIndex(view=>view.id===id)
-            this.$set(this.views,idx,info)
-            this.$set(this.views[idx],"unupdated",false)
+            const idx = this.views.findIndex((view) => view.id === id);
+            this.$set(this.views, idx, info);
+            this.$set(this.views[idx], "unupdated", false);
             // 设置dataTables
             for (let i = 0; i < this.dataTables.length; i++) {
                 const dataTable = this.dataTables[i];
-                const {scope,value} = info.datas
-                if(dataTable.name===scope){
+                const { scope, value } = info.datas;
+                if (dataTable.name === scope) {
                     for (let j = 0; j < dataTable.entities.length; j++) {
                         const entity = dataTable.entities[j];
-                        if(entity.title===value.title){
-                            this.$set(dataTable.entities,j,value)
-                            break
+                        if (entity.title === value.title) {
+                            this.$set(dataTable.entities, j, value);
+                            break;
                         }
                     }
                 }
@@ -628,21 +683,20 @@ export default {
                         }
 
                         i.icon-yuandianzhong {
-                                color: #bfbfbf;
-                            }
- 
-                        .close-wrap{
-                            i.close.closeB{
-                                display: none;
-                            }
-                    
+                            color: #bfbfbf;
                         }
 
-                        .close-wrap:hover{
+                        .close-wrap {
+                            i.close.closeB {
+                                display: none;
+                            }
+                        }
+
+                        .close-wrap:hover {
                             i.close.closeA {
                                 display: none;
                             }
-                            i.close.closeB{
+                            i.close.closeB {
                                 display: inline-block;
                             }
                         }

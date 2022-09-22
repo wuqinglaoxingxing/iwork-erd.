@@ -72,5 +72,6 @@ module.exports = {
             { from: "script", to: "script" },
             { from: "logo.png", to: "logo.png" }
         ])
-    ]
+    ],
+    performance: { hints: false }
 };

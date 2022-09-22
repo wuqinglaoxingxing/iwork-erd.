@@ -114,6 +114,16 @@
 .feild-type {
     color: #9f9c9f;
 }
+.icon-primary-key::before {
+    content: "";
+}
+
+.icon-primary-key::after {
+    content: "\e667";
+    margin-left: 3px;
+    font-size: 14px;
+    color: red;
+}
 
 /*自定义锚点样式*/
 .custom-anchor {
